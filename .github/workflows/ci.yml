@@ -1,0 +1,42 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout app repo
+      uses: actions/checkout@v4
+
+    - name: Login Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
+
+    - name: Build and Push Image
+      run: |
+        IMAGE=leandrosanttos007/lab-teste1:${{ github.sha }}
+        docker build -t $IMAGE .
+        docker push $IMAGE
+
+    - name: Checkout GitOps repo
+      uses: actions/checkout@v4
+      with:
+        repository: leandrosanttos007/lab-teste1-gitops
+        token: ${{ secrets.GIT_TOKEN }}
+        path: gitops
+
+    - name: Update image in Deployment
+      run: |
+        sed -i "s|image: .*|image: leandrosanttos007/lab-teste1:${{ github.sha }}|" gitops/k8s/deployment.yaml
+        cd gitops
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git commit -am "update image"
+        git push
