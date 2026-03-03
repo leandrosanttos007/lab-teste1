@@ -34,7 +34,7 @@ jobs:
 
     - name: Update image in Deployment
       run: |
-        sed -i "s|image: .*|image: leandrosanttos007/lab-teste1:${{ github.sha }}|" gitops/k8s/deployment.yaml
+        sed -i "s|image: .*|image: leohurin/lab-teste1:${{ github.sha }}|" gitops/k8s/deployment.yaml
         cd gitops
         git config user.name "github-actions"
         git config user.email "actions@github.com"
