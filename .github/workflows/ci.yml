@@ -21,7 +21,7 @@ jobs:
 
     - name: Build and Push Image
       run: |
-        IMAGE=leandrosanttos007/lab-teste1:${{ github.sha }}
+        IMAGE=leohurin/lab-teste1:${{ github.sha }}
         docker build -t $IMAGE .
         docker push $IMAGE
 
