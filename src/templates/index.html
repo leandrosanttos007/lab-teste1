@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ app_name }}</title>
+  <style>
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 2.5rem 3rem;
+      text-align: center;
+    }
+    h1 { margin-bottom: 0.25rem; }
+    .status {
+      display: inline-block;
+      background: #238636;
+      color: white;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin: 0.75rem 0;
+    }
+    .meta { color: #8b949e; font-size: 0.9rem; }
+    code { background: #21262d; padding: 0.1rem 0.4rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>{{ app_name }}</h1>
+    <p>Aplicação Python (Flask) — CI/CD com GitOps</p>
+    <span class="status">● online</span>
+    <p class="meta">
+      versão: <code>{{ version }}</code><br>
+      horário do servidor (UTC): <code>{{ horario }}</code>
+    </p>
+  </div>
+</body>
+</html>

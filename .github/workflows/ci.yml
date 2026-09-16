@@ -34,6 +34,8 @@ jobs:
         with:
           context: .
           push: true
+          build-args: |
+            APP_VERSION=${{ github.sha }}
           tags: |
             leohurin/lab-teste1:${{ github.sha }}
             leohurin/lab-teste1:latest
