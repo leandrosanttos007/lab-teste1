@@ -68,10 +68,14 @@ curl http://localhost:8080/api/info
 
 Disparado em todo push na `main`:
 
-1. Build da imagem com Buildx (cache via GitHub Actions), passando `APP_VERSION=<sha>` como
-   build-arg — a aplicação exibe essa versão em `/` e `/api/info`.
-2. Push para o Docker Hub com duas tags: o SHA do commit (rastreabilidade) e `latest`.
-3. Checkout do repositório `lab-teste1-gitops` e atualização da imagem em
+1. Build da imagem localmente no runner (`load: true`, sem push), com cache via GitHub Actions
+   e `APP_VERSION=<sha>` como build-arg — a aplicação exibe essa versão em `/` e `/api/info`.
+2. **Smoke test:** sobe um container a partir dessa imagem e faz `curl /health` (com retries)
+   antes de publicar. Se o container não responder, o pipeline falha aqui e a imagem **nunca**
+   chega ao Docker Hub.
+3. Push para o Docker Hub com duas tags: o SHA do commit (rastreabilidade) e `latest`. Reaproveita
+   o cache do passo 1, então é rápido.
+4. Checkout do repositório `lab-teste1-gitops` e atualização da imagem em
    `k8s/deployment.yaml`, com commit apenas se houve mudança real (evita falha por
    "nothing to commit") e `pull --rebase` antes do push (evita conflito em execuções
    concorrentes).
